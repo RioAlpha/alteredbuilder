@@ -85,6 +85,12 @@
                         <input class="form-check-input altered-style" type="checkbox" value="description" id="filterDescription" {% if "description" in checked_filters %}checked{% endif %}>
                         <label class="form-check-label d-block user-select-none" for="filterDescription" style="cursor: pointer;"><span class="description">{% translate "With description" %}</span></label>
                     </div>
+{% if user.is_authenticated %}
+                    <div class="form-check">
+                        <input class="form-check-input altered-style" type="checkbox" id="filterAvailable">
+                        <label class="form-check-label d-block user-select-none" for="filterAvailable" style="cursor: pointer;"><span><i class="fa-solid fa-check"></i> {% translate "Cards available" %}</span></label>
+                    </div>
+{% endif %}
                 </div>
 
                 <!-- Filter Button -->
