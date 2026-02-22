@@ -13,7 +13,6 @@ from decks.views import general as general_views
 
 urlpatterns = [
     path("", deck_lists_views.DeckListView.as_view(), name="deck-list"),
-    path("clear/", deck_lists_views.clear_all_decks, name="clear-all-decks"),
     path("own/", deck_lists_views.OwnDeckListView.as_view(), name="own-deck"),
     path("<int:pk>/", deck_detail_views.DeckDetailView.as_view(), name="deck-detail"),
     path(

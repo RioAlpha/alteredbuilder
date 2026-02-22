@@ -1,13 +1,9 @@
 import json
 from typing import Any
 
-from django.conf import settings
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, F, OuterRef
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect
 from django.views.generic.list import ListView
 
 from decks.deck_utils import (
@@ -162,16 +158,3 @@ class OwnDeckListView(LoginRequiredMixin, DeckListView):
         qs = super().get_queryset()
 
         return qs.filter(owner=self.request.user)
-
-
-@staff_member_required
-def clear_all_decks(request: HttpRequest) -> HttpResponse:
-    """Delete all decks from the database. Only available in DEBUG mode for staff."""
-    if not settings.DEBUG:
-        from django.http import Http404
-
-        raise Http404
-    if request.method == "POST":
-        count, _ = Deck.objects.all().delete()
-        return redirect("deck-list")
-    return redirect("deck-list")
