@@ -78,40 +78,11 @@ function markDeckAvailability() {
             badge.classList.remove("d-none");
             if (allAvailable) {
                 badge.innerHTML = '<span class="badge bg-success shadowed ms-2"><i class="fa-solid fa-check"></i> Available</span>';
-                deckEl.dataset.available = "true";
             } else {
                 badge.innerHTML = '<span class="badge bg-danger shadowed ms-2"><i class="fa-solid fa-xmark"></i> Missing</span>';
-                deckEl.dataset.available = "false";
             }
         }
     }
-
-    applyAvailabilityFilter();
-}
-
-function applyAvailabilityFilter() {
-    var checkbox = document.getElementById("filterAvailable");
-    if (!checkbox) return;
-
-    var isChecked = checkbox.checked;
-    var deckDisplays = document.querySelectorAll(".deck-display[data-deck-id]");
-
-    for (var i = 0; i < deckDisplays.length; i++) {
-        var container = deckDisplays[i].closest(".infinite-item");
-        if (!container) continue;
-
-        if (isChecked && deckDisplays[i].dataset.available !== "true") {
-            container.style.display = "none";
-        } else {
-            container.style.display = "";
-        }
-    }
-}
-
-// Wire up the checkbox
-var filterAvailableCheckbox = document.getElementById("filterAvailable");
-if (filterAvailableCheckbox) {
-    filterAvailableCheckbox.addEventListener("change", applyAvailabilityFilter);
 }
 
 markDeckAvailability();
