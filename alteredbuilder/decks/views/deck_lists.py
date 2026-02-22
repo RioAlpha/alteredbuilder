@@ -136,7 +136,10 @@ class DeckListView(ListView):
             deck_cards.setdefault(deck_id, []).append(
                 {"ref": reference, "qty": quantity}
             )
-        context["deck_cards_json"] = json.dumps(deck_cards)
+        # Pre-serialize per-deck card data for embedding on each deck element
+        context["deck_cards_map"] = {
+            deck_id: json.dumps(cards) for deck_id, cards in deck_cards.items()
+        }
 
         return context
 
