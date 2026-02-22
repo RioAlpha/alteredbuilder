@@ -79,6 +79,11 @@ class Command(BaseCommand):
             choices=["love", "views"],
             help="Sort order: love (most loved) or views (most viewed). Default: love",
         )
+        parser.add_argument(
+            "--legality",
+            type=str,
+            help="Comma-separated legality filters (e.g. standard,draft,nuc,sing,doubles)",
+        )
 
     def handle(self, *args, **options):
         count = options["count"]
@@ -105,10 +110,23 @@ class Command(BaseCommand):
             user.save()
             self.stdout.write(f"Created user: {user.username}")
 
+        legality = options.get("legality")
+        valid_legality = {"standard", "draft", "nuc", "sing", "doubles"}
+        if legality:
+            legality_list = [l.strip().lower() for l in legality.split(",")]
+            for l in legality_list:
+                if l not in valid_legality:
+                    raise CommandError(
+                        f"Invalid legality '{l}'. Choose from: {', '.join(valid_legality)}"
+                    )
+            legality = ",".join(legality_list)
+
         # Build the URL with filters
         params = {"order": order}
         if faction_list:
             params["faction"] = ",".join(faction_list)
+        if legality:
+            params["legality"] = legality
 
         # Fetch deck URLs from list pages
         deck_urls = []
